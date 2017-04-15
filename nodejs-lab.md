@@ -30,7 +30,7 @@ the purpose of this module is to create a service that should receive partial st
 6.	Create a function that should receive character id and return promise with character public data that is available at the following url: `https://esi.tech.ccp.is/latest/characters/<character id>/?datasource=tranquility`
 the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/95404206/?datasource=tranquility`
 
-# creating the chat socket
+# creating the chat socket - server
 
 1.	Install `socket.io` and `@types/socket.io` deps
 2.	Add socket support in the `app.ts` file `socket.listen(app);`
@@ -39,10 +39,19 @@ the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/
     ```
     const app = express()
     const httpd = http.createServer(app);
-    const socket = io(httpd);
+    const ioServer = io(httpd);
     ```
-5.
+5. add listener on new connection for the socket 
+    ```
+    ioServer.on('connection', (socket)=>{
+    });
+    ```
+6. on messages from client reply with broadcast to all other clients except the one that sent the message via `socket.broadcast.emit` function with the same message received
 
+
+# creating the chat socket - client *(bonus)*
+
+*you can copy-paste the contents of the public folder from the solution if you wish so, but I recoomend to try anyway*
 
 
 

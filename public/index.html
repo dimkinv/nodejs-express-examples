@@ -9,12 +9,13 @@
     <title>Document</title>
 </head>
 
-<body >
+<body>
     <h1>EVE Fans Chat</h1>
-    <div class="messages"></div>
+    Nickname: <input type="text" id="nickname" />
+    <div id="messages" class="messages"></div>
     <div class="new-message">
-        <input type="text" />
-        <button>Send</button>
+        <input id="newMessage" type="text" />
+        <button id="sendNewMessageBtn" type="button">Send</button>
     </div>
     <script src="socket.io/socket.io.js"></script>
     <script src="scripts.js"></script>

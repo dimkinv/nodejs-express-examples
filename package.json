@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc -w & nodemon"
+    "start": "concurrently --kill-others \"tsc -w\" nodemon"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
-    "@types/socket.io": "^1.4.29"
+    "@types/socket.io": "^1.4.29",
+    "concurrently": "^3.4.0"
   }
 }

@@ -4,7 +4,13 @@ import * as io from 'socket.io';
 
 const app = express()
 const httpd = http.createServer(app);
-const socket = io(httpd);
+const ioServer = io(httpd);
+ioServer.on('connection', (socket)=>{
+    socket.on('messageToServer', (message)=>{
+        console.log(message);
+        socket.broadcast.emit('messageFromServer', message);
+    });
+})
 
 app.use('/', express.static('public'));
 

@@ -15,9 +15,9 @@ body{
 
 }
 
-.new-message input{
+input{
     height: 30px;
-    margin-top: 5px;
+    margin: 5px 0;
     width:90%;
     font-size: 18px;
 }
