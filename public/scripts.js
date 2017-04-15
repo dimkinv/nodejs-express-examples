@@ -8,10 +8,7 @@ window.onload = () => {
     $newMessage.addEventListener('keydown', e => e.keyCode === 13 ? onSendClicked() : console.log(e));
 
     var socket = io();
-    socket.on('connection', function () {
-        console.log('connected to server');
-    });
-
+    
     socket.on('messageFromServer', (message) => {
         addMessage(message);
         console.info(`message from ${message.from} with content ${message.content}`);

@@ -30,7 +30,7 @@ the purpose of this module is to create a service that should receive partial st
 6.	Create a function that should receive character id and return promise with character public data that is available at the following url: `https://esi.tech.ccp.is/latest/characters/<character id>/?datasource=tranquility`
 the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/95404206/?datasource=tranquility`
 
-# creating the chat socket - server
+## creating the chat socket - server
 
 1.	Install `socket.io` and `@types/socket.io` deps
 2.	Add socket support in the `app.ts` file `socket.listen(app);`
@@ -49,9 +49,22 @@ the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/
 6. on messages from client reply with broadcast to all other clients except the one that sent the message via `socket.broadcast.emit` function with the same message received
 
 
-# creating the chat socket - client *(bonus)*
+## creating the chat socket - client *(bonus)*
 
 *you can copy-paste the contents of the public folder from the solution if you wish so, but I recoomend to try anyway*
 
+1. create socket instance from the io factory `var socket = io();`
+2. emit an event when user enters message and press button or `enter` key the message should be of the following format: `{ from: string, content: string }`
+   ```
+   socket.emit('messageToServer', message);
+   ```
+   *don't forget to update the UI for your own message (the server won't update it for you)*
+3. listen to a `messageFromServer` event to receive a message and update the UI
+   ```
+   socket.on('messageFromServer', (message) => {
+   });
+   ```
+## adding the cahcacter search for chat
 
+if the user will write something that starts from `!char` it will be understood by the server as a command, all the rest of the message will become the search parameter for the character search 
 
