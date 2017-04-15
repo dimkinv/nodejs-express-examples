@@ -28,7 +28,7 @@ the purpose of this module is to create a service that should receive partial st
 `{character: [1,2,3]}`
 5.	Create a function in the service that should get a string as a parameter and return a promise (axios get request also returns promise) with the result of array of numbers
 6.	Create a function that should receive character id and return promise with character public data that is available at the following url: `https://esi.tech.ccp.is/latest/characters/<character id>/?datasource=tranquility`
-the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/95404206/?datasource=tranquility`
+the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/95404206`
 
 ## creating the chat socket - server
 
@@ -68,3 +68,11 @@ the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/
 
 if the user will write something that starts from `!char` it will be understood by the server as a command, all the rest of the message will become the search parameter for the character search 
 
+1. create `models` folder and inside create `message.model.ts` file, inside implement a class that will represent the model of a message
+1. create `character-reposnse.model.ts` file in models and add an interface declaration for the response that will be back from the server. Remember you should **always** be typesafe!
+2. import message model into `app.ts` file `import { Message } from './models/message.model';`
+3. import all entitites from the search service into `app.ts`: `import * as searchService from './services/search.service';`
+4. add logic
+    1. if the message content starts with `!char` string is means it's a search query activate the search by string function to find all the ids that match
+    2. for each id received search the characters data on the server and broadcast message to all clients with charters name and birth date *(you can find birthdate in the result)*
+    3. use either promise or async/await syntax for this

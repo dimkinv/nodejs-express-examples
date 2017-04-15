@@ -8,6 +8,8 @@
     * base js types
     * enums
     * void
+* classes
+    * private/public at constructor
 * interfaces
     * optional properties
     * readonly properties `readonly x: number;`
@@ -40,8 +42,7 @@
 * decortors
     * class
     * property
-
-
+* multiline strings
 * configurations
     * tsconfig.json
     * d.ts
