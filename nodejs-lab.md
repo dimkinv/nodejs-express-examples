@@ -3,9 +3,9 @@
 
 1.	Create Package.json run `npm init`
 2.	Create tsconfig.json run `tsc –init`
-3.	Install express, @types/express `npm i express @types/express`
+3.	Install express, @types/express and concurrently `npm i express @types/express concurrently`
 4.	Create `app.ts` file and add simple server code
-5.	Add the following line into scripts in package.json `"start": "tsc -w & nodemon"`
+5.	Add the following line into scripts in package.json `"start": "concurrently --kill-others \"tsc -w\" nodemon"`
 6.	change the main property in `package.json` to `app.js`
 7.	run the server with `npm start` command
 
@@ -76,3 +76,41 @@ if the user will write something that starts from `!char` it will be understood 
     1. if the message content starts with `!char` string is means it's a search query activate the search by string function to find all the ids that match
     2. for each id received search the characters data on the server and broadcast message to all clients with charters name and birth date *(you can find birthdate in the result)*
     3. use either promise or async/await syntax for this
+
+## exposing the search as a REST API
+
+1. install body-parser and @types/body-parser dependencies
+1. create `controllers` folder and `index.ts` file inside
+1. in `index.ts` file import `Router` factory from `express` and create an instance
+   *note, this is not a constructor but factory*
+1. create `search-controller` folder in controllers and add `search.controller.ts`, `index.ts` files to it.
+1. expose `SearchFactory` class from it with get function 
+   ```
+   export class SearchController {
+     get(req: Request, res: Response) {
+
+     }
+   }
+   ```
+1. in `index.ts` add a get method to the router and setup the handler to be the `search.controller` get method, export the router
+    ```
+    export const searchRouter = Router();
+    const ctrl = new SearchController();
+    searchRouter.get('/:searchParam', ctrl.get);
+    ```
+1. in the `search-controller/index.ts` file create another `Router` and add the `search-controller` router to it with `use` function under the `/search` route
+    ```
+    export const apiRouter = Router();
+    apiRouter.use('/search', searchRouter);
+    ```
+1. add the whole `api` router to the `app.ts` file also with the `use` function under the `/api` route
+    ```
+    ```
+1. import `SearchService` into the controller and make write the logic to pull the characters from server. Respond to the request with json of the following format:
+    ```
+     {
+        name: string,
+        birthday: string
+    }
+    ```
+1. make sure to handle errors and notify the api user with appropriate HTTP codes

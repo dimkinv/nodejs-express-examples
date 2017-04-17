@@ -1,7 +1,9 @@
+import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as http from 'http';
 import * as io from 'socket.io';
 import { SearchService } from './services/search.service';
+import { apiRouter } from './controllers';
 import { Message } from './models/message.model';
 import { CharacterResponse } from './models/character-response.model';
 
@@ -9,6 +11,9 @@ const app = express()
 const httpd = http.createServer(app);
 const ioServer = io(httpd);
 const search = new SearchService();
+
+app.use(bodyParser());
+app.use('/api', apiRouter);
 
 ioServer.on('connection', (socket) => {
     socket.on('messageToServer', async (message: Message) => {
