@@ -5,7 +5,7 @@ interface CanRun{
 class Person{
 
 }
-
+const t = 0;
 class Student extends Person implements CanRun{
     startRunning(speed:number): boolean{
         return true
