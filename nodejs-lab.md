@@ -40,9 +40,7 @@ the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/
 ## creating the chat socket - server
 
 1.	Install `socket.io` and `@types/socket.io` deps
-2.	Add socket support in the `app.ts` file `socket.listen(app);`
-3.	Add script reference for the client side socket in the `index.html`
-4.	Add socket connection on server and listen to httpd server instead of express app
+4.	Add socket connection on server and listen to httpd server
     ```
     const app = express()
     const httpd = http.createServer(app);
@@ -59,7 +57,7 @@ the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/
 ## creating the chat socket - client *(bonus)*
 
 *you can copy-paste the contents of the public folder from the solution if you wish so, but I recoomend to try anyway*
-
+1.	Add script reference for the client side socket in the `index.html`
 1. create socket instance from the io factory `var socket = io();`
 2. emit an event when user enters message and press button or `enter` key the message should be of the following format: `{ from: string, content: string }`
    ```
