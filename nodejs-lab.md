@@ -20,6 +20,8 @@
 1. create public folder
 1. inside `app.ts` (server) create simple express server instance
     ```
+    import * as http from 'http';
+    import * as express from 'express';
     const app = express()
     const httpd = http.createServer(app);   
     ```
@@ -27,6 +29,13 @@
 3. inside public folder add `index.html`, `scripts.ts`, `styles.css` files
 4. create a top header, big box at top to hold all the messages, an input to write new message and a button to send the message
 5. add links to js/css files from `index.html`
+1. as the last line of the file listen to the server on port 3000
+```
+httpd.listen(3000, () => {
+    console.log('Example app listening on port 3000!')
+});
+```
+*these lines should always be the last lines*
 
 ## search for character data service
 
