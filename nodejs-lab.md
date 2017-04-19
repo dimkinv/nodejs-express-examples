@@ -18,7 +18,12 @@
 
 ## html
 1. create public folder
-2. inside `app.ts` (server) add the `public` folder to static route `app.use('/', express.static('public'));`
+1. inside `app.ts` (server) create simple express server instance
+    ```
+    const app = express()
+    const httpd = http.createServer(app);   
+    ```
+2. add the `public` folder to static route `app.use('/', express.static('public'));`
 3. inside public folder add `index.html`, `scripts.ts`, `styles.css` files
 4. create a top header, big box at top to hold all the messages, an input to write new message and a button to send the message
 5. add links to js/css files from `index.html`
