@@ -27,7 +27,7 @@ ioServer.on('connection', (socket) => {
             }
             const results = await Promise.all(promises);
             for (let result of results) {
-                ioServer.emit('messageFromServer', new Message(message.from, `${result.name} is born at ${result.birthday}`));
+                ioServer.emit('messageFromServer', new Message('bot', `${result.name} is born at ${result.birthday}`));
             }
         }
         socket.broadcast.emit('messageFromServer', message);

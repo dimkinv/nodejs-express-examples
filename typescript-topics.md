@@ -1,5 +1,8 @@
 # Typescript 
-## Basics
+* configurations
+    * tsconfig.json
+    * d.ts
+    * npm @types
 * variable assign
     * let, const, var
     * destructuring
@@ -43,8 +46,4 @@
     * class
     * property
 * multiline strings
-* configurations
-    * tsconfig.json
-    * d.ts
-    * npm @types
 
