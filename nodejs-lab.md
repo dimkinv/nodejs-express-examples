@@ -1,9 +1,9 @@
 # Lab
 ## Skeleton
 
-1.	Create Package.json run `npm init`
+1.	To create Package.json run `npm init`
 2.  install nodemon in global by running `npm i -g nodemon`
-2.	Create tsconfig.json run `tsc –-init`
+2.	To create tsconfig.json run `tsc –-init`
 2.  add the following to the `CompilerOptions` in the tsconfig.json file:
     ```
     "lib": [
