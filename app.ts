@@ -7,10 +7,11 @@ import { apiRouter } from './controllers';
 import { Message } from './models/message.model';
 import { CharacterResponse } from './models/character-response.model';
 
-const app = express()
+const app = express();
 const httpd = http.createServer(app);
 const ioServer = io(httpd);
 const search = new SearchService();
+
 
 app.use(bodyParser());
 app.use('/api', apiRouter);
@@ -35,6 +36,12 @@ ioServer.on('connection', (socket) => {
 })
 
 app.use('/', express.static('public'));
+
+let s = new SearchService();
+s.getCharacterIds('cat')
+.then((res)=>{
+    console.log(res);
+})
 
 httpd.listen(3000, () => {
     console.log('Example app listening on port 3000!')
