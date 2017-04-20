@@ -53,8 +53,14 @@ the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/
 
 ## creating the chat socket - server
 
-1.	Install `socket.io` and `@types/socket.io` deps
-4.	Add socket connection on server and listen to httpd server
+1.  create `models` folder and inside create `message.model.ts` file, inside implement a class that will represent the model of a message.
+
+    message should be of this format: `{from:string, content:string}` 
+
+    *essentially it should be a class with two public properties*
+2. import message model into `app.ts` file `import { Message } from         './models/message.model';`
+1.	Install `socket.io` and `@types/socket.io` deps with npm as in previous steps
+4.	import socket.io to `app.ts` and add socket connection on server.
     ```
     const app = express()
     const httpd = http.createServer(app);
@@ -65,8 +71,13 @@ the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/
     ioServer.on('connection', (socket)=>{
     });
     ```
-6. on messages from client reply with broadcast to all other clients except the one that sent the message via `socket.broadcast.emit` function with the same message received
-
+1. inside the connection callback create another listener for custom message from client to server with the name 
+   ```
+   socket.on('messageToServer', (message: Message) => {
+    
+   }
+   ```
+6. on messages from client reply with broadcast to all other clients except the one that sent the message via `socket.broadcast.emit` function with the same message received `    socket.broadcast.emit('messageFromServer', message);`
 
 ## creating the chat socket - client *(bonus)*
 
@@ -83,14 +94,12 @@ the result example can be seen here: `https://esi.tech.ccp.is/latest/characters/
    socket.on('messageFromServer', (message) => {
    });
    ```
-## adding the cahcacter search for chat
+## adding the character search for chat
 
 if the user will write something that starts from `!char` it will be understood by the server as a command, all the rest of the message will become the search parameter for the character search 
 
-1. create `models` folder and inside create `message.model.ts` file, inside implement a class that will represent the model of a message
-1. create `character-reposnse.model.ts` file in models and add an interface declaration for the response that will be back from the server. Remember you should **always** be typesafe!
-2. import message model into `app.ts` file `import { Message } from './models/message.model';`
-3. import all entitites from the search service into `app.ts`: `import * as searchService from './services/search.service';`
+1. create `character-reposnse.model.ts` file in `models` folder and add an interface declaration for the response that will be back from the server. Remember you should **always** be typesafe!
+3. import all the functions from the search service into `app.ts`: `import * as searchService from './services/search.service';`
 4. add logic
     1. if the message content starts with `!char` string is means it's a search query activate the search by string function to find all the ids that match
     2. for each id received search the characters data on the server and broadcast message to all clients with charters name and birth date *(you can find birthdate in the result)*
@@ -98,12 +107,17 @@ if the user will write something that starts from `!char` it will be understood 
 
 ## exposing the search as a REST API
 
-1. install body-parser and @types/body-parser dependencies
+1. install `body-parser` and `@types/body-parser` dependencies
 1. create `controllers` folder and `index.ts` file inside
-1. in `index.ts` file import `Router` factory from `express` and create an instance
+1. in `index.ts` file import `Router` factory from express `import { Router } from 'express';` and create an instance
+
    *note, this is not a constructor but factory*
+   ```
+   export const apiRouter = Router();
+   apiRouter.use('/search', searchRouter);
+   ```
 1. create `search-controller` folder in controllers and add `search.controller.ts`, `index.ts` files to it.
-1. expose `SearchFactory` class from it with get function 
+1. expose `SearchFactory` class from `search.controller.ts` with get function 
    ```
    export class SearchController {
      get(req: Request, res: Response) {
@@ -111,7 +125,7 @@ if the user will write something that starts from `!char` it will be understood 
      }
    }
    ```
-1. in `index.ts` add a get method to the router and setup the handler to be the `search.controller` get method, export the router
+1. in `controllers/index.ts` file add a get method to the router and setup the handler to be the `search.controller` get method, export the router
     ```
     export const searchRouter = Router();
     const ctrl = new SearchController();
@@ -119,11 +133,16 @@ if the user will write something that starts from `!char` it will be understood 
     ```
 1. in the `search-controller/index.ts` file create another `Router` and add the `search-controller` router to it with `use` function under the `/search` route
     ```
-    export const apiRouter = Router();
-    apiRouter.use('/search', searchRouter);
+    import { Router } from 'express';
+    import { SearchController } from './search.controller';
+
+    export const searchRouter = Router();
+    const ctrl = new SearchController();
+    searchRouter.get('/:searchParam', ctrl.get);
     ```
 1. add the whole `api` router to the `app.ts` file also with the `use` function under the `/api` route
     ```
+    app.use('/api', apiRouter);
     ```
 1. import `SearchService` into the controller and make write the logic to pull the characters from server. Respond to the request with json of the following format:
     ```
@@ -133,3 +152,6 @@ if the user will write something that starts from `!char` it will be understood 
     }
     ```
 1. make sure to handle errors and notify the api user with appropriate HTTP codes
+   for example if you get error for some reason you server should return status code 500 `res.status(500).end();`
+
+   on the other hand for query that did not return any characters should return 404 not found.
